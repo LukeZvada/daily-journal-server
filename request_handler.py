@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from entries import get_all_entries, get_single_entry
+from entries import get_all_entries, get_single_entry, delete_entry, create_entry
 
 
 # Here's a class. It inherits from another class.
@@ -59,7 +59,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_entry = None
 
         if resource == "entries":
-            new_entry = create_entries(post_body)
+            new_entry = create_entry(post_body)
 
         self.wfile.write(f"{new_entry}".encode())
 
@@ -71,7 +71,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         if resource == "entries":
-            delete_entries(id)
+            delete_entry(id)
 
         self.wfile.write("".encode())
 

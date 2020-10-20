@@ -1,2 +1,1 @@
-from .request import get_all_entries
-from .request import get_single_entry
+from .request import get_all_entries, get_single_entry, delete_entry, create_entry
