@@ -43,6 +43,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "moods": 
                 response = f"{get_all_moods}"
 
+    
+        
+
         self.wfile.write(response.encode())
 
     # Here's a method on the class that overrides the parent's method.

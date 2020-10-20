@@ -1,3 +1,4 @@
+import Moods
 from models.entries import Entries
 import sqlite3
 import json
@@ -79,6 +80,33 @@ def create_entry(newEntry):
 
 	return json.dumps(newEntry)
 
+def entry_search (concept):
+    with sqlite3.connect('./dailyjournal.db') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute(f"""
+        SELECT
+            e.id,
+            e.concept,
+            e.entry,
+            e.mood_id,
+            e.date
+        FROM Journal_entries e
+        WHERE e.entry LIKE '%{concept}%'
+        """)
+
+        entries = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            entry = Entries(row['id'], row['concept'], row['entry'], row['mood_id'],
+                                    row['date'])
+            entries.append(entry.__dict__)
+
+        return json.dumps(entries)
+
 def delete_entry(entryId):
 	with sqlite3.connect("./dailyjournal.db") as conn:
 		db_cursor = conn.cursor()
@@ -94,3 +122,4 @@ def delete_entry(entryId):
 		FROM EntryTags AS et
 		WHERE et.entry_id = ?
 		""", ( entryId, ))
+
